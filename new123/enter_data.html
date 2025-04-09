@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .checkbox-group {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Result Page</h2>
+        <form id="resultForm" action="save_result.php" method="POST">
+            <label>Select Branch:</label>
+            <select id="branch" name="branch" required>
+                <option value="">Select Branch</option>
+                <option value="CSE">Computer Technology</option>
+                <option value="ECE">Electrical</option>
+                <option value="ME">Mechanical</option>
+                <option value="EJ">Electronics</option>
+                <option value="CE">Civil</option>
+            </select>
+            
+            <label>Select Semester:</label>
+            <select id="semester" name="semester" required>
+                <option value="">Select Semester</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+            
+            <label>Number of Subjects:</label>
+            <input type="number" id="num_subjects" name="num_subjects" placeholder="Enter Number of Subjects" required min="1">
+            <button type="button" onclick="addSubjects()">Add Subjects</button>
+            
+            <div id="subjectsContainer"></div>
+            
+            <label>Enrolled Students:</label>
+            <input type="number" id="students" name="students" placeholder="Enter Number of Students" required min="1">
+            
+            <button type="submit">Add</button>
+            <button type="button" onclick="reviewResult()">Review</button>
+        </form>
+        <p class="success-message" id="successMessage">Data Added Successfully!</p>
+    </div>
+
+    <script>
+        function addSubjects() {
+            const subjectsContainer = document.getElementById("subjectsContainer");
+            subjectsContainer.innerHTML = ""; // Clear previous subjects
+            const numSubjects = parseInt(document.getElementById("num_subjects").value);
+            
+            if (isNaN(numSubjects) || numSubjects < 1) {
+                alert("Please enter a valid number of subjects.");
+                return;
+            }
+
+            for (let i = 1; i <= numSubjects; i++) {
+                const subjectDiv = document.createElement("div");
+                subjectDiv.innerHTML = `
+                    <label>Subject ${i}:</label>
+                    <input type="text" name="subject${i}" placeholder="Enter Subject Name" required>
+
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="subject${i}_type[]" value="Theory"> Theory</label>
+                        <label><input type="checkbox" name="subject${i}_type[]" value="Practical"> Practical</label>
+                        <label><input type="checkbox" name="subject${i}_type[]" value="SLA"> SLA</label>
+                    </div>
+
+                    <label>Maximum Marks:</label>
+                    <input type="number" name="subject${i}_maxMarks" placeholder="Enter Maximum Marks" required min="1">
+                    <hr>
+                `;
+                subjectsContainer.appendChild(subjectDiv);
+            }
+        }
+
+        function reviewResult() {
+            alert("Reviewing Entered Data");
+        }
+    </script>
+</body>
+</html>
